@@ -79,6 +79,40 @@ function App() {
 export default App;
 
 // ==========================
+import { useEffect, useMemo, useState } from "react";
+import Sum from "./Sum";
+
+function App() {
+  const [count, setCount] = useState(0);
+  const [number, setNumber] = useState(1000);
+
+  const looping = useMemo(() => {
+    let result = 0;
+
+    for (let i = 0; i < 10000; i++) {
+      result += i;
+      // console.log(i);
+    }
+
+    return result;
+  }, [count]);
+
+  console.log("loop", looping);
+
+  console.log("App Routing");
+  return (
+    <div>
+      <h1>Counter: {count}</h1>
+      <button onClick={() => setCount(count + 1)}>Incerment</button>
+      <Sum value={number} />
+      <button onClick={() => setNumber(number + 1)}>Number Incerment</button>
+    </div>
+  );
+}
+
+export default App;
+
+// ==========================
 // ==========================
 // ==========================
 

@@ -142,6 +142,92 @@ function App() {
 
 export default App;
 // ==========================
+
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+
+function Api() {
+  async function getData() {
+    const res = await axios.get("https://dummyjson.com/products");
+    console.log(res.data.products.slice(0, 5));
+
+    return res.data.products.slice(0, 5);
+  }
+  const { isLoading, data, error } = useQuery({
+    queryKey: ["product"],
+    queryFn: getData,
+  });
+
+  if (isLoading) return <h1>Loading...</h1>;
+
+  if (error) return <h1>Error ...</h1>;
+
+  return (
+    <div>
+      {data?.map((value, index) => {
+        return (
+          <div key={value.id}>
+            <h1>{value.title}</h1>
+            <p>{value.price}</p>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+export default Api;
+
+import { useState } from "react";
+
+function Api() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  async function getData() {
+    try {
+      setLoading(true);
+      setError(false);
+
+      const res = await fetch("https://dummyjson.com/prosducts");
+      const data = await res.json();
+
+      setProducts(data.products);
+    } catch (error) {
+      setError(true);
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (loading) {
+    return <h1>Loading ...</h1>;
+  }
+  if (error) {
+    return <h1>error ...</h1>;
+  }
+
+  return (
+    <div>
+      <h1>TanStack Query in React</h1>
+
+      <button onClick={getData}>Get Data</button>
+
+      {products.map((product) => (
+        <div key={product.id}>
+          <h2>{product.title}</h2>
+          <p>Price: ${product.price}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default Api;
+
+
 // ==========================
 
 // import { useEffect, useReducer } from "react";

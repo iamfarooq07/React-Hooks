@@ -113,6 +113,34 @@ function App() {
 export default App;
 
 // ==========================
+import React, { useRef } from "react";
+
+function App() {
+  const refInput = useRef();
+  console.log("refInput", refInput.current);
+
+  const handleFocus = () => {
+    console.log("Check This Object", refInput.current.value);
+    refInput.current.focus();
+  };
+
+  const colorChange = () => {
+    refInput.current.style.color = "red";
+  };
+
+  return (
+    <div>
+      <h1>Use Ref Hooks</h1>
+      <input ref={refInput} type="text" placeholder="Enter User Name" />
+      <h1 ref={refInput}>Check useRef Hooks</h1>
+
+      <button onClick={handleFocus}>Click Me</button>
+      <button onClick={colorChange}>Color Change</button>
+    </div>
+  );
+}
+
+export default App;
 // ==========================
 // ==========================
 
